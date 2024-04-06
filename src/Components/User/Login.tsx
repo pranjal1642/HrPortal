@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 const Login = () => {
 	useEffect(() => {});
 
-	const logMovies = async () => {
+	const logingApi = async () => {
 		try {
 			const payload = {
 				email: 'abc@gmail.com',
@@ -12,7 +12,7 @@ const Login = () => {
 				contactNumber: '8307659141',
 			};
 
-			const response = await fetch('http://localhost:4000/register', {
+			const response = await fetch('http://localhost:4000/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -37,28 +37,50 @@ const Login = () => {
 	} = useForm();
 
 	const onSubmit = (data: any) => {
-		logMovies();
+		logingApi();
 	};
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
-			<div>
-				<label>Email:</label>
-				<input {...register('email', { required: 'Email is required' })} />
-				{/* {errors.email && <p>{errors.email.message}</p>} */}
-			</div>
+		<div className="container">
+			<div className="row">
+				<div className="col">
+					<div className="login">
+						<div className="login-header">
+							<h2>HrPortal Login</h2>
+						</div>
+						<form onSubmit={handleSubmit(onSubmit)}>
+							<div>
+								<label>Email:</label>
+								<input
+									className="form-control"
+									placeholder="Email"
+									type="email"
+									{...register('email', { required: 'Email is required' })}
+								/>
+								{errors.email && <p>Emial Is Required</p>}
+							</div>
 
-			<div>
-				<label>Password:</label>
-				<input
-					type="password"
-					{...register('password', { required: 'Password is required' })}
-				/>
-				{/* {errors.password && <p>{errors.password.message}</p>} */}
-			</div>
+							<div>
+								<label>Password:</label>
+								<input
+									type="password"
+									className="form-control"
+									placeholder="**********"
+									{...register('password', {
+										required: 'Password is required',
+									})}
+								/>
+								{errors.password && <p>Password is required</p>}
+							</div>
 
-			<button type="submit">Login</button>
-		</form>
+							<button className="btn btn-primary mt-4" type="submit">
+								Login
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	);
 };
 
