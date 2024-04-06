@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { encryptData } from '../../services';
 
 const Login = () => {
-	useEffect(() => {});
+	useEffect(() => { });
 
 	const logingApi = async (e: any) => {
 		console.log(e);
@@ -14,7 +14,7 @@ const Login = () => {
 			};
 			console.log(payload);
 
-			const response = await fetch('http://e:4000/login', {
+			const response = await fetch('http://localhost:4000/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
