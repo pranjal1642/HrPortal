@@ -4,6 +4,7 @@ import { encryptData } from "../../services";
 
 interface IFormInput {
     email: string;
+    Contact: number;
     password: string;
     confirmPassword: string;
     userName: string;
@@ -12,14 +13,22 @@ interface IFormInput {
 
 export default function SignUp() {
     const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
-    const onSubmit: SubmitHandler<IFormInput> = (data: any) => {
+    const onSubmit: SubmitHandler<IFormInput> = async (data: any) => {
+        console.log(data, "sllslsls");
         const payload: any = { data: encryptData(data) };
         console.log(payload);
-        fetch('http://localhost:4000/register', { method: "POST", body: JSON.stringify(payload)  })
-            .then(response => response.json())
-            .then(data => console.log(data, "apiiiiiiii"))
-            .catch(error => console.error(error));
+        try {
+            const response = await fetch('http://localhost:4000/register', {
+                method: "POST",
+                body: JSON.stringify(payload)
+            });
+            const responseData = await response.json();
+            console.log(responseData, "apiiiiiiii");
+        } catch (error) {
+            console.error(error, "Sssssssssssssss");
+        }
     };
+
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="signup-form">
@@ -33,6 +42,11 @@ export default function SignUp() {
                     <label>Email</label>
                     <input {...register("email", { required: true, maxLength: 20 })} placeholder="Enter email" />
                     {errors.email && <span className="error-msg">Email is required</span>}
+                </li>
+                <li>
+                    <label>Contact</label>
+                    <input {...register("Contact", { required: true, maxLength: 20 })} placeholder="Enter Contact" />
+                    {errors.email && <span className="error-msg">Contact is required</span>}
                 </li>
                 <li>
                     <label>Password</label>
