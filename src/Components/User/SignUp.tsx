@@ -14,15 +14,21 @@ interface IFormInput {
 export default function SignUp() {
     const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
     const onSubmit: SubmitHandler<IFormInput> = async (data: any) => {
-        console.log(data, "sllslsls");
-        const payload: any = { data: encryptData(data) };
-        console.log(payload);
+        const payload: any = {
+            data: encryptData({
+                userName: data?.userName,
+                email: data?.email,
+                contactNumber: data.Contact,
+                password: data?.password,
+                role: data.userRole
+            })
+        };
         try {
             const response = await fetch('http://localhost:4000/register', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                  },
+                },
                 body: JSON.stringify(payload)
             });
             const responseData = await response.json();
