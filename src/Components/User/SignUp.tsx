@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./signUp.css";
+import { encryptData } from "../../services";
 
 interface IFormInput {
     email: string;
@@ -12,7 +13,9 @@ interface IFormInput {
 export default function SignUp() {
     const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
     const onSubmit: SubmitHandler<IFormInput> = (data: any) => {
-        fetch('http://localhost:4000/register', { method: "POST", body: JSON.stringify(data) })
+        const payload: any = { data: encryptData(data) };
+        console.log(payload);
+        fetch('http://localhost:4000/register', { method: "POST", body: JSON.stringify(payload)  })
             .then(response => response.json())
             .then(data => console.log(data, "apiiiiiiii"))
             .catch(error => console.error(error));
