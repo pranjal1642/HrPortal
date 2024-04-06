@@ -1,18 +1,20 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { encryptData } from '../../services';
 
 const Login = () => {
 	useEffect(() => {});
 
-	const logingApi = async () => {
+	const logingApi = async (e: any) => {
+		console.log(e);
+
 		try {
 			const payload = {
-				email: 'abc@gmail.com',
-				password: 'akjldaa',
-				contactNumber: '8307659141',
+				data: encryptData({ email: e?.email, password: e?.password }),
 			};
+			console.log(payload);
 
-			const response = await fetch('http://localhost:4000/login', {
+			const response = await fetch('http://e:4000/login', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -37,7 +39,7 @@ const Login = () => {
 	} = useForm();
 
 	const onSubmit = (data: any) => {
-		logingApi();
+		logingApi(data);
 	};
 
 	return (
