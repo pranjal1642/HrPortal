@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-import { ENCRYPT_KEY } from "./constants";
+import { ENCRYPT_KEY } from "./config";
 
 export const decryptData = (req: any) => {
   try {
@@ -8,7 +8,6 @@ export const decryptData = (req: any) => {
     req.body = JSON.parse(stringData);
   } catch (error) {
     console.error("Error decrypting data:", error);
-    // Handle the error as per your application's requirements
   }
 };
 
@@ -22,7 +21,6 @@ export const encryptData = (data: any) => {
     return encryptData;
   } catch (error) {
     console.error("Error encrypting data:", error);
-    // Handle the error as per your application's requirements
-    return null; // Return null or handle the error accordingly
+    return null;
   }
 };

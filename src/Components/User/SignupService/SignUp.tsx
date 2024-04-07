@@ -1,6 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./signUp.css";
-import { fetchApi } from "../../apiServices/axios";
+import { fetchApi } from "../../../apiServices/axios";
 
 interface IFormInput {
   email: string;
@@ -12,27 +12,19 @@ interface IFormInput {
 }
 
 export default function SignUp() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IFormInput>();
+  const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data: any) => {
-    const payload: any = {
-      userName: data?.userName,
-      email: data?.email,
-      contactNumber: data.Contact,
-      password: data?.password,
-      role: data.userRole,
-    };
     try {
-      await fetchApi({
-        url: "http://localhost:4000/register",
-        method: "post",
-        body: payload,
-      });
+      const payload: any = {
+        userName: data?.userName,
+        email: data?.email,
+        contactNumber: data.Contact,
+        password: data?.password,
+        role: data.userRole,
+      };
+      await fetchApi({ url: "http://localhost:4000/register", method: "post", body: payload, });
     } catch (error) {
-      console.error(error, "errorinregister");
+      console.error(error, "error In Register");
     }
   };
 

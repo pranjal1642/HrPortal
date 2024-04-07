@@ -1,29 +1,22 @@
 import { useForm } from "react-hook-form";
-import { fetchApi } from "../../apiServices/axios";
+import { fetchApi } from "../../../apiServices/axios";
 
 const Login = () => {
-  const logingApi = async (e: any) => {
+  const { register, handleSubmit, formState: { errors }, } = useForm();
+
+  // login function
+  const login = async (e: any) => {
     try {
       const payload = { email: e?.email, password: e?.password };
-
-      const response: any = await fetchApi({
-        url: "http://localhost:4000/login",
-        method: "POST",
-        body: payload,
-      });
-      console.log("resspsososs", response);
+      await fetchApi({ url: "http://localhost:4000/login", method: "POST", body: payload, });
     } catch (error) {
       console.error("Error:", error);
     }
   };
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
 
+  // onsubmit function
   const onSubmit = (data: any) => {
-    logingApi(data);
+    login(data);
   };
 
   return (

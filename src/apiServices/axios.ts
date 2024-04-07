@@ -1,5 +1,5 @@
 import axios from "axios";
-import { encryptData, decryptData } from "../services";
+import { decryptData, encryptData } from "../constants/constants";
 interface arguments {
   url: string;
   method: string;
