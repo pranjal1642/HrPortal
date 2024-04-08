@@ -1,6 +1,6 @@
-import { useForm, SubmitHandler } from "react-hook-form";
 import "./signUp.css";
-import { fetchApi } from "../../../apiServices/axios";
+import { Signup } from "../../../apiServices/apiFetch";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 interface IFormInput {
   email: string;
@@ -22,7 +22,8 @@ export default function SignUp() {
         password: data?.password,
         role: data.userRole,
       };
-      await fetchApi({ url: "http://localhost:4000/register", method: "post", body: payload, });
+      const res=await Signup(payload);
+      console.log(res,"SIGNUP")
     } catch (error) {
       console.error(error, "error In Register");
     }

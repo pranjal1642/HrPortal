@@ -14,7 +14,7 @@ export const fetchApi = async (args: arguments) => {
       url: url,
       data: { data: method === "get" ? body : encryptData(body) },
     });
-    return decryptData(response?.data);
+    return decryptData(response?.data?.data);
   } catch (error) {
     console.log(error, "axioserror");
   }

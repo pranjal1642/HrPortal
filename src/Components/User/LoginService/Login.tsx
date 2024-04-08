@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { fetchApi } from "../../../apiServices/axios";
+import { LoginApi } from "../../../apiServices/apiFetch";
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors }, } = useForm();
@@ -7,8 +7,9 @@ const Login = () => {
   // login function
   const login = async (e: any) => {
     try {
-      const payload = { email: e?.email, password: e?.password };
-      await fetchApi({ url: "http://localhost:4000/login", method: "POST", body: payload, });
+      const loginPayload = { email: e?.email, password: e?.password };
+      const res = LoginApi(loginPayload);
+      console.log(res, "LOGIN");
     } catch (error) {
       console.error("Error:", error);
     }
