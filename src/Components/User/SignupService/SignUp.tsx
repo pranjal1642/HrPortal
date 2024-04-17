@@ -1,6 +1,7 @@
 import "./signUp.css";
 import { Signup } from "../../../apiServices/apiFetch";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 interface IFormInput {
   email: string;
@@ -12,7 +13,12 @@ interface IFormInput {
 }
 
 export default function SignUp() {
-  const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data: any) => {
     try {
       const payload: any = {
@@ -22,8 +28,11 @@ export default function SignUp() {
         password: data?.password,
         role: data.userRole,
       };
-      const res=await Signup(payload);
-      console.log(res,"SIGNUP")
+      const res = await Signup(payload);
+      if (res) {
+        navigate("/");
+      }
+      console.log(res, "SIGNUP");
     } catch (error) {
       console.error(error, "error In Register");
     }
