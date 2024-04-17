@@ -29,3 +29,4 @@ export const Signup = (data: any) => {
     console.log("SIGNUP ERROR");
   }
 };
+
