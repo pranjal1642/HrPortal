@@ -2,6 +2,8 @@
 export const auth = {
   Login: "login",
   Signup: "register",
+  GetRoles: "getRoles",
+  AddEmp: "addEmployee",
 };
 
 // ***********API METHODS************

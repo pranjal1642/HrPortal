@@ -30,3 +30,30 @@ export const Signup = (data: any) => {
   }
 };
 
+// FETCH ROLES
+export const getRoles = (data: any) => {
+  try {
+    const response = fetchApi({
+      url: `${API_URL}/${auth.GetRoles}`,
+      method: methods.POST,
+      body: data,
+    });
+    return response;
+  } catch (error) {
+    console.log("SIGNUP ERROR");
+  }
+};
+
+// FETCH ROLES
+export const addEmployee = (data: any) => {
+  try {
+    const response = fetchApi({
+      url: `${API_URL}/${auth.AddEmp}`,
+      method: methods.POST,
+      body: data,
+    });
+    return response;
+  } catch (error) {
+    console.log("SIGNUP ERROR");
+  }
+};

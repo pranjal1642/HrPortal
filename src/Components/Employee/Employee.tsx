@@ -6,7 +6,10 @@ import {
 } from "../../helpers/helper";
 import "./employee.scss";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Button, Modal } from "react-bootstrap";
+import { Button, CloseButton, Modal } from "react-bootstrap";
+import RolesList from "../Roles/RolesList";
+import { CloseIcon } from "../../assets/icons/close";
+import { addEmployee } from "../../apiServices/apiFetch";
 
 interface IFormInput {
   firstName: string;
@@ -24,10 +27,11 @@ interface IFormInput {
 
 export default function Employee() {
   const [showModal, setShowModal] = useState(false);
+  const [empRole, setEmpRole] = useState<any>();
   const handleClose = () => {
     setShowModal(false);
   };
-
+  console.log("sdaadkjadadasda", empRole);
   const {
     register,
     handleSubmit,
@@ -47,8 +51,10 @@ export default function Employee() {
         designation: data?.designation,
         reportingManager: data?.reportingManager,
         doj: convertDateToEpoch(data?.doj),
-        employeeCode: data?.employeeCode,
+        userName: "Admin",
       };
+      const res = await addEmployee(payload);
+      console.log("ashukdadssad", res);
       //   if (res) {
       //     navigate("/");
       //   }
@@ -184,16 +190,16 @@ export default function Employee() {
           <li>
             <label>Designation</label>
             <input
-              {...register("designation", {
-                required: "Designation is required",
-                minLength: {
-                  value: 6,
-                  message: "Designation must be at least 6 characters",
-                },
-              })}
+              {...register(
+                "designation"
+                // {
+                //   required: "Designation is required",
+                // }
+              )}
               type="text"
               placeholder="Enter Designation"
               onClick={() => setShowModal(true)}
+              value={empRole?.positionName}
             />
             {errors.designation && (
               <span className="error-msg">{errors.designation.message}</span>
@@ -254,14 +260,20 @@ export default function Employee() {
         <input type="submit" value="Sign Up" />
       </form>
       <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>Designation Information</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Designation</p>
+          <RolesList setEmpRole={setEmpRole} />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setEmpRole("");
+              handleClose();
+            }}
+          >
             Close
           </Button>
           <Button variant="primary" onClick={handleClose}>
