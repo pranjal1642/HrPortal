@@ -1,6 +1,31 @@
-.tabs{
-    text-decoration: none;
-    list-style: none;
-    color: white;
-    font-weight: 600;
-}
+.sidebar {
+    min-height: 100vh; // Ensures the sidebar takes full height
+  
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid #444; // Adds a subtle separator
+    }
+  
+    .tabs {
+      margin-top: 20px;
+  
+      .nav-link {
+        padding: 10px 20px;
+        &:hover {
+          background-color: #333; // Darken on hover for better interaction
+        }
+  
+        &.active {
+          background-color: #0056b3; // Highlight active link
+          &:hover {
+            background: #004080; // Darken the active item on hover
+          }
+        }
+      }
+    }
+  }
+  
+  .content {
+    padding: 20px;
+    background-color: #fff; // Change or remove based on your actual content needs
+  }
