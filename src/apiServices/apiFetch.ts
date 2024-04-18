@@ -54,6 +54,6 @@ export const addEmployee = (data: any) => {
     });
     return response;
   } catch (error) {
-    console.log("SIGNUP ERROR");
+    console.log("Employee ERROR");
   }
 };
