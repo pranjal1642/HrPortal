@@ -3,9 +3,9 @@ import { auth, methods } from "./apiEndpoints";
 import { API_URL } from "../constants/config";
 
 // LOGIN
-export const LoginApi = (data: any) => {
+export const LoginApi = async (data: any) => {
   try {
-    const response = fetchApi({
+    const response = await fetchApi({
       url: `${API_URL}/${auth.Login}`,
       method: methods.POST,
       body: data,
@@ -17,9 +17,9 @@ export const LoginApi = (data: any) => {
 };
 
 // SIGNUP
-export const Signup = (data: any) => {
+export const Signup = async (data: any) => {
   try {
-    const response = fetchApi({
+    const response = await fetchApi({
       url: `${API_URL}/${auth.Signup}`,
       method: methods.POST,
       body: data,
@@ -31,9 +31,9 @@ export const Signup = (data: any) => {
 };
 
 // FETCH ROLES
-export const getRoles = (data: any) => {
+export const getRoles = async (data: any) => {
   try {
-    const response = fetchApi({
+    const response = await fetchApi({
       url: `${API_URL}/${auth.GetRoles}`,
       method: methods.POST,
       body: data,
@@ -44,11 +44,25 @@ export const getRoles = (data: any) => {
   }
 };
 
-// FETCH ROLES
-export const addEmployee = (data: any) => {
+// ADD EMPLOYEES
+export const addEmployee = async (data: any) => {
   try {
-    const response = fetchApi({
+    const response = await fetchApi({
       url: `${API_URL}/${auth.AddEmp}`,
+      method: methods.POST,
+      body: data,
+    });
+    return response;
+  } catch (error) {
+    console.log("SIGNUP ERROR");
+  }
+};
+
+// ADD ROLES
+export const addRoles = async (data: any) => {
+  try {
+    const response = await fetchApi({
+      url: `${API_URL}/${auth.AddRole}`,
       method: methods.POST,
       body: data,
     });

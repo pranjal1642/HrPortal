@@ -3,6 +3,7 @@ export const auth = {
   Login: "login",
   Signup: "register",
   GetRoles: "getRoles",
+  AddRole: "addRoles",
   AddEmp: "addEmployee",
 };
 

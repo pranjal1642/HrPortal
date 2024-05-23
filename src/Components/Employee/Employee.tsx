@@ -6,10 +6,9 @@ import {
 } from "../../helpers/helper";
 import "./employee.scss";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Button, CloseButton, Modal } from "react-bootstrap";
 import RolesList from "../Roles/RolesList";
-import { CloseIcon } from "../../assets/icons/close";
 import { addEmployee } from "../../apiServices/apiFetch";
+import CommonModal from "../common/CommonModal";
 
 interface IFormInput {
   firstName: string;
@@ -31,7 +30,6 @@ export default function Employee() {
   const handleClose = () => {
     setShowModal(false);
   };
-  console.log("sdaadkjadadasda", empRole);
   const {
     register,
     handleSubmit,
@@ -39,7 +37,6 @@ export default function Employee() {
   } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     try {
-      console.log("shshshshhhshshss", data);
       const payload: any = {
         firstName: data?.firstName,
         lastName: data?.lastName,
@@ -54,7 +51,6 @@ export default function Employee() {
         userName: "Admin",
       };
       const res = await addEmployee(payload);
-      console.log("ashukdadssad", res);
       //   if (res) {
       //     navigate("/");
       //   }
@@ -190,12 +186,9 @@ export default function Employee() {
           <li>
             <label>Designation</label>
             <input
-              {...register(
-                "designation"
-                // {
-                //   required: "Designation is required",
-                // }
-              )}
+              {...register("designation", {
+                required: "Designation is required",
+              })}
               type="text"
               placeholder="Enter Designation"
               onClick={() => setShowModal(true)}
@@ -259,28 +252,13 @@ export default function Employee() {
         </ul>
         <input type="submit" value="Sign Up" />
       </form>
-      <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header>
-          <Modal.Title>Designation Information</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <RolesList setEmpRole={setEmpRole} />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              setEmpRole("");
-              handleClose();
-            }}
-          >
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <CommonModal
+        showModal={showModal}
+        modalBody={
+          <RolesList setEmpRole={setEmpRole} handleClose={handleClose} />
+        }
+        modalTitle="Roles List"
+      />
     </>
   );
 }

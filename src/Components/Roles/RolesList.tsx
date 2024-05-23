@@ -1,12 +1,14 @@
 import * as React from "react";
-import CryptoJS from "crypto-js";
 import IndeterminateCheckBoxRoundedIcon from "@mui/icons-material/IndeterminateCheckBoxRounded";
 import DisabledByDefaultRoundedIcon from "@mui/icons-material/DisabledByDefaultRounded";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import { styled, alpha } from "@mui/material/styles";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
-import { getRoles } from "../../apiServices/apiFetch";
+import { addRoles, getRoles } from "../../apiServices/apiFetch";
+import { SubmitHandler, useForm } from "react-hook-form";
+import CommonModal from "../common/CommonModal";
 
 const CustomTreeItem = styled(TreeItem)(({ theme }) => ({
   [`& .${treeItemClasses.content}`]: {
@@ -40,19 +42,66 @@ function EndIcon(
 ) {
   return <DisabledByDefaultRoundedIcon {...props} sx={{ opacity: 0.3 }} />;
 }
+interface IFormInput {
+  designation: string;
+  reportingTo: string;
+}
+export default function RolesList({
+  setEmpRole,
+  handleClose,
+}: {
+  setEmpRole?: any;
+  handleClose?: any;
+}) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>();
 
-export default function RolesList({ setEmpRole }: { setEmpRole: any }) {
   const [orgDtaa, setOrgData] = React.useState([]);
+  const [addRoleModal, setaddRoleModal] = React.useState<boolean>(false);
+  const [showModal, setShowModal] = React.useState<boolean>(false);
+  const [roleToAdd, setRoleToAdd] = React.useState<any>({
+    positionName: "CEO",
+  });
+  const [hoveredItemId, setHoveredItemId] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     fetchData();
   }, []);
 
+  const handleCloseRoleModal = () => setaddRoleModal(false);
+  const handleCloseModal = () => setShowModal(false);
+
+  const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
+    try {
+      console.log("shshshshhhshshss", data, roleToAdd);
+      const payload: any = {
+        companyId: "823b84ef-5ef3-4518-8d32-d8fd874f85b8",
+        positionName: data?.designation,
+        reportingTo: data.reportingTo,
+        reportingToId: roleToAdd?.currentId,
+      };
+      const res = await addRoles(payload);
+      if (res) {
+        handleCloseRoleModal();
+        await fetchData();
+      }
+      console.log("ashukdadssad", res);
+      // if (res) {
+      // navigate("/");
+      // }
+      // console.log(res, "SIGNUP");
+    } catch (error) {
+      console.error(error, "error In Register");
+    }
+  };
+
   const fetchData = async () => {
     const response = await getRoles({
-      companyId: "6de8c99d-191a-4c6b-bd7f-48e273168565",
+      companyId: "823b84ef-5ef3-4518-8d32-d8fd874f85b8",
     });
-    console.log("sayugadjadadsad", response);
     setOrgData(response);
   };
 
@@ -65,13 +114,29 @@ export default function RolesList({ setEmpRole }: { setEmpRole: any }) {
         itemId={role.currentId.toString()}
         label={
           <div
+            onMouseEnter={() => setHoveredItemId(role.currentId.toString())}
+            onMouseLeave={() => setHoveredItemId(null)}
             onClick={(event) => {
               event.stopPropagation();
-              setEmpRole(role);
-              console.log("Selected role:", role);
+              if (setEmpRole) {
+                setEmpRole(role);
+                handleClose();
+              }
             }}
           >
             {role.positionName}
+            {!setEmpRole
+              ? hoveredItemId === role.currentId.toString() && (
+                  <span
+                    onClick={() => {
+                      setaddRoleModal(true);
+                      setRoleToAdd(role);
+                    }}
+                  >
+                    <PersonAddAltIcon sx={{ opacity: 0.5, height: 20 }} />
+                  </span>
+                )
+              : ""}
           </div>
         }
       >
@@ -80,17 +145,81 @@ export default function RolesList({ setEmpRole }: { setEmpRole: any }) {
     ));
   }
   return (
-    <SimpleTreeView
-      aria-label="customized"
-      // defaultExpandedItems={["1", "3"]}
-      slots={{
-        expandIcon: ExpandIcon,
-        collapseIcon: CollapseIcon,
-        endIcon: EndIcon,
-      }}
-      sx={{ overflowX: "hidden", minHeight: 270, flexGrow: 1, maxWidth: 300 }}
-    >
-      {renderTreeItems(orgDtaa)}
-    </SimpleTreeView>
+    <>
+      <SimpleTreeView
+        aria-label="customized"
+        // defaultExpandedItems={["1", "3"]}
+        slots={{
+          expandIcon: ExpandIcon,
+          collapseIcon: CollapseIcon,
+          endIcon: EndIcon,
+        }}
+        sx={{ overflowX: "hidden", minHeight: 270, flexGrow: 1, maxWidth: 300 }}
+      >
+        {renderTreeItems(orgDtaa)}
+      </SimpleTreeView>
+      <CommonModal
+        showModal={addRoleModal}
+        handleClose={handleCloseRoleModal}
+        modalTitle="Add Role"
+        modalBody={
+          <form onSubmit={handleSubmit(onSubmit)} className="employee-form">
+            <ul>
+              <li>
+                <label>Role</label>
+                <input
+                  {...register("designation", {
+                    required: {
+                      value: true,
+                      message: "Role Name is required",
+                    },
+                    minLength: {
+                      value: 2,
+                      message: "Role Name must be at least 2 characters long",
+                    },
+                    maxLength: {
+                      value: 20,
+                      message: "Role Name cannot exceed 20 characters",
+                    },
+                  })}
+                  type="text"
+                  placeholder="Enter New Role"
+                />
+                {errors.designation && (
+                  <span className="error-msg">
+                    {errors.designation.message}
+                  </span>
+                )}
+              </li>
+              <li>
+                <label>Reports To</label>
+                <input
+                  {...register("reportingTo", {
+                    required: "Reporting To is required",
+                  })}
+                  type="text"
+                  placeholder="Reporting To"
+                  onClick={() => setShowModal(true)}
+                  value={roleToAdd?.positionName}
+                />
+                {errors.reportingTo && (
+                  <span className="error-msg">
+                    {errors.reportingTo.message}
+                  </span>
+                )}
+              </li>
+              <input type="submit" value="Add Role" />
+            </ul>
+          </form>
+        }
+      />
+      <CommonModal
+        showModal={showModal}
+        modalBody={
+          <RolesList setEmpRole={setRoleToAdd} handleClose={handleCloseModal} />
+        }
+        modalTitle="Roles List"
+      />
+    </>
   );
 }

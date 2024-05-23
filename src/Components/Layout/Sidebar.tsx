@@ -2,7 +2,7 @@ import { Link, Outlet } from "react-router-dom";
 import "./sidebar.scss";
 import { useState } from "react";
 const Sidebar = () => {
-  const [active, setActive] = useState("/dashboard");
+  const [active, setActive] = useState(window.location.pathname);
   return (
     <div className="container-fluid h-100">
       <div className="row h-100">

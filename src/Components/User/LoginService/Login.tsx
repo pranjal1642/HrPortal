@@ -15,9 +15,10 @@ const Login = () => {
   const login = async (e: any) => {
     try {
       const loginPayload = { email: e?.email, password: e?.password };
-      const res: any = LoginApi(loginPayload);
+      const res: any = await LoginApi(loginPayload);
       console.log(res, "LOGIN");
-      if (res?.status == 200 || res?.status == 201) {
+      // if (res?.status == 200 || res?.status == 201) {
+      if (res) {
         navigate("/dashboard");
       }
     } catch (error) {

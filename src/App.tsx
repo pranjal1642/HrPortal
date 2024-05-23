@@ -10,6 +10,7 @@ import SignUp from "./Components/User/SignupService/SignUp";
 import Dashboard from "./Components/Layout/Dashboard";
 import Employee from "./Components/Employee/Employee";
 import MainLayout from "./Components/Layout/MainLayout";
+import RolesList from "./Components/Roles/RolesList";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -20,6 +21,7 @@ const App = () => {
         <Route element={<MainLayout />}>
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/employee" element={<Employee />}></Route>
+          <Route path="/roles" element={<RolesList />}></Route>
         </Route>
       </Route>
     )
