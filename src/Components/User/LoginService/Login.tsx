@@ -32,43 +32,45 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-6">
-          <div className="login">
-            <div className="login-header">
-              <h2>HrPortal Login</h2>
+    <div className="login-container">
+      <div className="login-content">
+        <div className="login-header">
+          <h2>HrPortal Login</h2>
+        </div>
+        <div className="login-form">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <label>Email:</label>
+              <input
+                className="form-control"
+                placeholder="Email"
+                type="email"
+                {...register("email", { required: "Email is required" })}
+              />
+              {errors.email && (
+                <span className="error-msg">Email Is Required</span>
+              )}
             </div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div>
-                <label>Email:</label>
-                <input
-                  className="form-control"
-                  placeholder="Email"
-                  type="email"
-                  {...register("email", { required: "Email is required" })}
-                />
-                {errors.email && <p>Emial Is Required</p>}
-              </div>
 
-              <div>
-                <label>Password:</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="**********"
-                  {...register("password", {
-                    required: "Password is required",
-                  })}
-                />
-                {errors.password && <p>Password is required</p>}
-              </div>
+            <div>
+              <label>Password:</label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="**********"
+                {...register("password", {
+                  required: "Password is required",
+                })}
+              />
+              {errors.password && (
+                <span className="error-msg">Password is required</span>
+              )}
+            </div>
 
-              <button className="btn btn-primary mt-4" type="submit">
-                Login
-              </button>
-            </form>
-          </div>
+            <button className="btn btn-primary mt-4" type="submit">
+              Login
+            </button>
+          </form>
         </div>
       </div>
     </div>
